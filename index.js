@@ -25,12 +25,19 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect(); //  
 
-    // Get the 'menu' collection from the 'bistrodb' database
+    // Define collections
     const menuCollection = client.db("bistrodb").collection("menu");
+    const reviewCollection = client.db("bistrodb").collection("reviews");
 
     // API endpoint to get all menu items
     app.get('/menu', async (req, res) => {
       const result = await menuCollection.find().toArray();
+      res.send(result)
+    })
+
+    // API endpoint to get all review items
+    app.get('/reviews', async (req, res) => {
+      const result = await reviewCollection.find().toArray();
       res.send(result)
     })
 

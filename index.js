@@ -28,6 +28,7 @@ async function run() {
     // Define collections
     const menuCollection = client.db("bistrodb").collection("menu");
     const reviewCollection = client.db("bistrodb").collection("reviews");
+    const cartCollection = client.db("bistrodb").collection("carts");
 
     // API endpoint to get all menu items
     app.get('/menu', async (req, res) => {
@@ -39,6 +40,13 @@ async function run() {
     app.get('/reviews', async (req, res) => {
       const result = await reviewCollection.find().toArray();
       res.send(result)
+    })
+
+    // carts collection
+    app.post('/carts', async (req, res) => {
+      const item = req.body // get data from client side
+      const result = await cartCollection.insertOne(item); // insert data to database
+      res.send(result); // send response to client side
     })
 
     // Send a ping to confirm a successful connection
@@ -58,3 +66,16 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Bisro Boss Restawrant is running on port ${port}`)
 })
+
+/**
+ * -------------------------------
+ *       NAMING CONVENTION
+ * -------------------------------
+ * app.get('/users') // all users
+ * app.get('/users/:id') // specific user
+ * app.post('/users') // add a new user
+ * app.patch('/users/:id') // update user
+ * app.delete('/users/:id') // delete user
+ * app.put('/users/:id') // upsert user (update or insert)
+ * 
+ */
